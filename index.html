@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en-NZ">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Speedcubing Magic Number</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <noscript>
+    <style>
+      /* Hide everything except this message if JS is off */
+      body > *:not(noscript) {
+        display: none !important;
+      }
+      noscript {
+        display: block;
+        padding: 2rem;
+        text-align: center;
+        font-size: 1.5rem;
+        color: #c00;
+        background: #fee;
+        border: 2px solid #c00;
+        margin: 2rem auto;
+        max-width: 400px;
+        border-radius: 10px;
+        font-family: sans-serif;
+      }
+    </style>
+    <div>
+      ⚠️ Sorry, this game requires JavaScript to function.<br>
+      Please enable JavaScript in your browser and reload the page.
+    </div>
+  </noscript>
+
+  <h1>Speedcubing Magic Number Game</h1>
+  <p>Guess the cubing magic number! You get four tries</p>
+
+  <input
+    type="number"
+    id="guessInput"
+    step="0.01"
+    placeholder="Enter time (e.g., 9.77)"
+    >
+  <button id="submitGuess" class="btn">Submit Guess</button>
+  <button id="playAgain" class="btn hidden">Play Again</button>
+
+  <p id="message"></p>
+
+  <div id="scoreBoard">
+    <h2>Your Score: <span id="score">0</span></h2>
+  </div>
+  
+  <div id="leaderboardContainer">
+    <br>
+    <h2>Leaderboard</h2>
+    <ol id="leaderboardList"></ol>
+  </div>
+  
+
+  <script src="logic.js"></script>
+</body>
+</html>
