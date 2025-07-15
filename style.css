@@ -138,3 +138,15 @@ input[type="number"]:focus {
     padding: 0.75rem 0;
   }
 }
+
+a, a:visited {
+  color: #3b82f6; 
+  text-decoration: none;
+}
+
+a:hover, a:visited:hover {
+  color: #2563eb; 
+  text-decoration: underline;
+  transition: color 0.4s ease;
+
+}
