@@ -58,7 +58,7 @@ function addScoreToLeaderboard(name, score) {
 
 function startGame() {
   magicNumber = sampleTimes[Math.floor(Math.random() * sampleTimes.length)];
-  guessesLeft = 3;
+  guessesLeft = 4;
 
   input.disabled = false;
   submitBtn.disabled = false;
