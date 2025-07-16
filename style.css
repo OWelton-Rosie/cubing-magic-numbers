@@ -150,3 +150,19 @@ a:hover, a:visited:hover {
   transition: color 0.4s ease;
 
 }
+
+#nextHint {
+  display: block;
+  margin-top: 0.4rem;
+  font-size: 1rem;
+  color: #38bdf8;
+  text-shadow: 0 0 4px #38bdf8;
+  opacity: 0.9;
+  animation: fadeout 4.5s ease-out forwards;
+}
+
+@keyframes fadeout {
+  0% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
