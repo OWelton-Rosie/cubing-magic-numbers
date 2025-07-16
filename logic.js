@@ -11,6 +11,8 @@ const message = document.getElementById("message");
 const scoreElem = document.getElementById("score");
 const leaderboardList = document.getElementById("leaderboardList");
 
+let playerName = ""; // Store player name once per session
+
 function loadLeaderboard() {
   const data = localStorage.getItem(leaderboardKey);
   return data ? JSON.parse(data) : [];
@@ -56,24 +58,15 @@ function addScoreToLeaderboard(name, score) {
   updateLeaderboardDisplay();
 }
 
-function startGame() {
+function generateNewMagicNumber() {
   magicNumber = sampleTimes[Math.floor(Math.random() * sampleTimes.length)];
   guessesLeft = 4;
-
-  input.disabled = false;
-  submitBtn.disabled = false;
-  playAgainBtn.classList.add("hidden");
-
-  message.textContent = "";
   input.value = "";
   input.focus();
-
-  updateScore(score);
 }
 
 function handleGuess() {
   const userGuess = parseFloat(input.value);
-  const magicNum = magicNumber;
 
   if (isNaN(userGuess)) {
     message.textContent = "Please enter a valid time, e.g., 6.83";
@@ -82,21 +75,33 @@ function handleGuess() {
 
   guessesLeft--;
 
-  if (userGuess === magicNum) {
+  if (userGuess === magicNumber) {
     score++;
     updateScore(score);
 
-    message.textContent = `🎉 Correct! The magic time was ${magicNum.toFixed(2)} seconds.`;
-    endGame();
+    message.innerHTML = `🎉 Correct! The magic time was ${magicNumber.toFixed(2)} seconds.<br><span id="nextHint">🎯 New time selected! Keep guessing…</span>`;
 
-    const playerName = promptForName();
+    if (!playerName) {
+      playerName = promptForName();
+    }
     addScoreToLeaderboard(playerName, score);
-  } else if (guessesLeft > 0) {
-    const hint = userGuess > magicNum ? "Too high!" : "Too low!";
+
+    setTimeout(() => {
+      const hint = document.getElementById("nextHint");
+      if (hint) hint.remove();
+    }, 2500);
+
+    generateNewMagicNumber();
+    return;
+  }
+
+  if (guessesLeft > 0) {
+    const hint = userGuess > magicNumber ? "Too high!" : "Too low!";
     message.textContent = `❌ ${hint} You have ${guessesLeft} guess${guessesLeft === 1 ? "" : "es"} left.`;
   } else {
-    message.textContent = `💥 Out of guesses! The time was ${magicNum.toFixed(2)} seconds.`;
+    message.textContent = `💥 Out of guesses! The time was ${magicNumber.toFixed(2)} seconds.`;
     endGame();
+    playerName = ""; // Reset name on game over so they can enter new name next game if desired
   }
 
   input.value = "";
@@ -109,10 +114,20 @@ function endGame() {
   playAgainBtn.classList.remove("hidden");
 }
 
+function startGame() {
+  generateNewMagicNumber();
+  input.disabled = false;
+  submitBtn.disabled = false;
+  playAgainBtn.classList.add("hidden");
+  message.textContent = "";
+  updateScore(score);
+  // Optionally reset playerName here if you want new name every new game:
+  // playerName = "";
+}
+
 submitBtn.addEventListener("click", handleGuess);
 playAgainBtn.addEventListener("click", startGame);
 
-// Fetch magic numbers from JSON and start game
 fetch('./numbers.json')
   .then((res) => res.json())
   .then((data) => {
